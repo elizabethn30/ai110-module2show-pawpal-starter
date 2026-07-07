@@ -2,10 +2,13 @@
 
 ## 1. System Design
 
+Three core actions that the user should be able to do are see the daily schedule, add information about themselves and their pet, and add new care activities for their pets. 
+
 **a. Initial design**
 
 - Briefly describe your initial UML design.
 - What classes did you include, and what responsibilities did you assign to each?
+I included 4 classes, which were Pet, Owner, Task, and Schedule
 
 **b. Design changes**
 
