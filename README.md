@@ -79,11 +79,23 @@ pytest
 pytest --cov
 ```
 
+Run the tests using: 
+python -m pytest
+
+Brief description of the tests:
+The tests cover daily and weekly recurrences, tasks in chronological order, recurring tasks, and edge cases for the methods. 
+
 Sample test output:
 
 ```
-# Paste your pytest output here
+collected 11 items                                                                                                                   
+
+tests\test_pawpal.py ...........                                                                                               [100%]
+
+======================================================== 11 passed in 0.08s =========================================================
 ```
+
+I have a confidence level of around 4/5 in the system's reliability from the pytest cases. 
 
 ## 📐 Smarter Scheduling
 
