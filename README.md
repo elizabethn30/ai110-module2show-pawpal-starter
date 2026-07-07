@@ -112,10 +112,78 @@ I have a confidence level of around 4/5 in the system's reliability from the pyt
 
 Describe your app in numbered steps so a reader can follow along without watching a video:
 
-1. <!-- Describe this step -->
-2. <!-- Describe this step -->
-3. <!-- Describe this step -->
-4. <!-- Describe this step -->
-5. <!-- Add more steps as needed -->
+1. User can add owner's information and the pet's information
+2. Pet's information and tasks get added to the schedule by being sorted
+3. User can view schedule for the day
+4. Schedule warns user of any conflicts in task timing
+5. User can filter schedule to see incomplete tasks left
+
+Sample CLI output from main.py: 
+```
+Today's Schedule: 
+
+Task: Go on a walk
+  Pet: Bill
+  Time: 2026-07-07 09:00:59.670298
+  Frequency: daily
+  Status: In-Progress
+
+Task: Wash dog
+  Pet: Bill
+  Time: 2026-07-07 14:00:59.670298
+  Frequency: weekly
+  Status: In-Progress
+
+Task: Walk around park
+  Pet: Bill
+  Time: 2026-07-07 13:00:59.670298
+  Frequency: daily
+  Status: In-Progress
+
+Task: Nap time
+  Pet: Bill
+  Time: 2026-07-07 15:00:59.670298
+  Frequency: daily
+  Status: In-Progress
+
+Task: Feed bird food
+  Pet: Joan
+  Time: 2026-07-07 12:00:59.670298
+  Frequency: daily
+  Status: In-Progress
+
+Task: Wash
+  Pet: Joan
+  Time: 2026-07-07 10:00:59.670298
+  Frequency: weekly
+  Status: In-Progress
+
+Task: Clean bird cage
+  Pet: Joan
+  Time: 2026-07-07 15:00:59.670298
+  Frequency: daily
+  Status: In-Progress
+
+Sorting method:
+2026-07-07 09:00:59.670298 Go on a walk
+2026-07-07 10:00:59.670298 Wash
+2026-07-07 12:00:59.670298 Feed bird food
+2026-07-07 13:00:59.670298 Walk around park
+2026-07-07 14:00:59.670298 Wash dog
+2026-07-07 15:00:59.670298 Nap time
+2026-07-07 15:00:59.670298 Clean bird cage
+
+Filter method:
+Go on a walk
+Wash dog
+Walk around park
+Nap time
+Feed bird food
+Wash
+Clean bird cage
+
+Conflict Detection:
+Conflict at 2026-07-07 15:00:59.670298: Nap time and Clean bird cage
+```
 
 **Screenshot or video** *(optional)*: <!-- Insert a screenshot or link to a demo video here -->

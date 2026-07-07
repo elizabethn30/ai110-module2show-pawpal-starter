@@ -101,15 +101,26 @@ st.subheader("Build Schedule")
 st.caption("This button should call your scheduling logic once you implement it.")
 
 if st.button("Generate schedule"):
-    st.warning(
-        "Not implemented yet. Next step: create your scheduling logic (classes/functions) and call it here."
-    )
-    st.markdown(
-        """
-Suggested approach:
-1. Design your UML (draft).
-2. Create class stubs (no logic).
-3. Implement scheduling behavior.
-4. Connect your scheduler here and display results.
-"""
-    )
+    scheduler = Scheduler([pet])
+
+    st.subheader("Schedule")
+    sorted_tasks = scheduler.sort_by_time()
+    if sorted_tasks:
+        for task in sorted_tasks:
+            st.write(f"{task.due_date_time.strftime('%H:%M')} - {task.description} ({task.frequency})")
+    else:
+        st.info("No tasks to schedule.")
+
+    st.subheader("Conflicts")
+    conflicts = scheduler.check_conflicts()
+    if conflicts:
+        for conflict in conflicts:
+            st.warning(conflict)
+    else:
+        st.success("No scheduling conflicts!")
+
+    st.subheader("Incomplete Tasks")
+    incomplete = scheduler.filter_tasks(is_completed=False)
+    if incomplete:
+        for task in incomplete:
+            st.write(f"- {task.description} ({task.status})")

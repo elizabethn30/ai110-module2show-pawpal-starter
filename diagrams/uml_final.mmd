@@ -16,20 +16,25 @@ classDiagram
         +addTask(Task)
         +removeTask(Task)
         +getTasks() list~Task~
+        +getTaskById(string) Task
         +getOwner() Owner
     }
 
     class Task {
+        -string id
         -string description
         -datetime dueDateTime
+        -string frequency
         -string status
         -boolean isCompleted
+        -Pet pet
         +updateStatus(string)
+        +markComplete()
         +getDescription() string
         +getDueDateTime() datetime
     }
 
-    class Schedule {
+    class Scheduler {
         -list~Pet~ pets
         +addPet(Pet)
         +removePet(Pet)
@@ -37,8 +42,11 @@ classDiagram
         +getTasksByStatus(string) list~Task~
         +getOverdueTasks() list~Task~
         +getTasksForPet(Pet) list~Task~
+        +sortByTime() list~Task~
+        +filterTasks(string, boolean) list~Task~
+        +checkConflicts() list~string~
     }
 
     Owner "1" --> "*" Pet
     Pet "1" --> "*" Task
-    Schedule --> "*" Pet
+    Scheduler --> "*" Pet
