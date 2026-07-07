@@ -32,7 +32,10 @@ One change I made was to include the Pet class in the Task class as an attribute
 **b. Tradeoffs**
 
 - Describe one tradeoff your scheduler makes.
+One tradeoff the scheduler makes is that it does not check for the overlapping times and instead checks for only exact time matches. For example, if task 1 was from 3:00-3:30, and task 2 was from 3:15-4:00, then the scheduler would say they did not overlap because it is not an exact match. 
+
 - Why is that tradeoff reasonable for this scenario?
+This tradeoff is reasonable for this scenario because if the person in charge of task 2 was busy doing task 1, then all of the tasks would not be completed by the time they need to be done. This causes the daily schedule to constantly be pushed back. 
 
 ---
 

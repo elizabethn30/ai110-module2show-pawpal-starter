@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List
 
 
@@ -72,9 +72,35 @@ class Task:
         self.status = new_status
 
     def mark_complete(self) -> None:
-        """Mark the task as completed."""
+        """Mark task as completed and auto-create next occurrence for recurring tasks.
+
+        For daily/weekly tasks, uses timedelta to calculate next due date:
+        - Daily: adds 1 day to current due_date_time
+        - Weekly: adds 7 days to current due_date_time
+        Creates new task with same properties and adds it to the same pet.
+        """
         self.is_completed = True
         self.status = "completed"
+
+        # Create next occurrence for daily or weekly tasks
+        if self.frequency.lower() in ["daily", "weekly"]:
+            days_to_add = 1 if self.frequency.lower() == "daily" else 7
+            next_due_date = self.due_date_time + timedelta(days=days_to_add)
+
+            # Create new task for next occurrence
+            next_task = Task(
+                id=f"{self.id}_next",
+                description=self.description,
+                due_date_time=next_due_date,
+                frequency=self.frequency,
+                status="In-Progress",
+                is_completed=False,
+                pet=None
+            )
+
+            # Add to the same pet if this task is assigned to one
+            if self.pet:
+                self.pet.add_task(next_task)
 
     def get_description(self) -> str:
         """Return the task's description."""
@@ -83,7 +109,6 @@ class Task:
     def get_due_date_time(self) -> datetime:
         """Return the task's due date and time."""
         return self.due_date_time
-
 
 class Scheduler:
     def __init__(self, pets: List[Pet] = None):
@@ -127,3 +152,56 @@ class Scheduler:
     def get_tasks_for_pet(self, pet: Pet) -> List[Task]:
         """Return all tasks assigned to a specific pet."""
         return pet.get_tasks()
+
+    def sort_by_time(self) -> List[Task]:
+        """Return all tasks sorted chronologically by due date and time.
+
+        Uses Python's sorted() with a lambda key function to extract due_date_time
+        for comparison. Returns tasks in ascending order (earliest first).
+        """
+        return sorted(self.get_all_tasks(), key=lambda task: task.due_date_time)
+
+    def filter_tasks(self, pet_name: str = None, is_completed: bool = None) -> List[Task]:
+        """Filter tasks by pet name and/or completion status using list comprehensions.
+
+        Args:
+            pet_name: Filter by pet name (string). Pass None to skip this filter.
+            is_completed: Filter by completion status (True/False). Pass None to skip.
+
+        Returns:
+            List of tasks matching all specified filters. Filters are applied sequentially.
+        """
+        tasks = self.get_all_tasks()
+
+        if pet_name is not None:
+            tasks = [task for task in tasks if task.pet and task.pet.name == pet_name]
+
+        if is_completed is not None:
+            tasks = [task for task in tasks if task.is_completed == is_completed]
+
+        return tasks
+
+    def check_conflicts(self) -> List[str]:
+        """Detect scheduling conflicts using nested loop comparison.
+
+        Compares each task pair to find exact time matches (same due_date_time).
+        Returns warning messages instead of raising exceptions.
+
+        Returns:
+            List of warning messages. Empty list if no conflicts found.
+        """
+        warnings = []
+        all_tasks = self.get_all_tasks()
+
+        # Compare each task with other tasks
+        for i in range(len(all_tasks)):
+            for j in range(i + 1, len(all_tasks)):
+                task1 = all_tasks[i]
+                task2 = all_tasks[j]
+
+                # If times match, add warning
+                if task1.due_date_time == task2.due_date_time:
+                    msg = f"Conflict at {task1.due_date_time}: {task1.description} and {task2.description}"
+                    warnings.append(msg)
+
+        return warnings
