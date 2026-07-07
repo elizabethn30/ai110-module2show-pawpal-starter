@@ -7,13 +7,18 @@ Three core actions that the user should be able to do are see the daily schedule
 **a. Initial design**
 
 - Briefly describe your initial UML design.
+My initial UML design has 4 classes, which are called Task, Owner, Pet, and Scheduler. Each class had its own attributes and methods with some of the classes being related to each other. For example, the Pet class would get from the Task class. 
+
 - What classes did you include, and what responsibilities did you assign to each?
-I included 4 classes, which were Pet, Owner, Task, and Schedule
+I included 4 classes, which were Pet, Owner, Task, and Scheduler. The Task class has attributes that describe the task and its status in terms of time, and there are methods to get the attributes. The Owner class has attributes that are information about them and methods to edit the pets they have. The Pet class also has attributes with information about them, but they also have methods to edit the tasks they have. The Scheduler class has an attribute with the list of the pets and methods that will sort and filter the tasks depending on the pet. 
 
 **b. Design changes**
 
 - Did your design change during implementation?
-- If yes, describe at least one change and why you made it.
+Yes, my design did change during implementation. 
+
+- If yes, describe at least one change and why you made it. 
+One change I made was to include the Pet class in the Task class as an attribute. I had asked Claude Code what logic bottlenecks there could be. I was told that when the get_all_tasks() method is called in the Scheduler class, it would go through all of the tasks, which could slow down the process. By including the Pet name in the Task class, we could look for the specific Pet name instead, whcih would speed up the process. 
 
 ---
 
